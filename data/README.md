@@ -10,3 +10,4 @@ data/nerf_synthetic
 |   |-- test
 ......
 ```
+According to [https://github.com/pengsida/learning_nerf/blob/master/README.md].
