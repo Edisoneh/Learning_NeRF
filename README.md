@@ -12,4 +12,4 @@ For example, for the dataset debug in the NeRF reproduction process, you can use
 ```
 python run.py --type dataset --cfg_file configs/nerf/nerf.yaml
 ```
-According to [https://github.com/pengsida/learning_nerf/README.md].
+According to [https://github.com/pengsida/learning_nerf/blob/master/README.md].
