@@ -17,15 +17,19 @@ class NetworkWrapper(nn.Module):
         scalar_stats = {}
         loss = 0
         # ipdb.set_trace()
-        color_loss = self.color_crit(output['rgb_fine'], batch['rgb'])
-        scalar_stats.update({'color_mse': color_loss})
-        loss += color_loss + self.color_crit(output['rgb_coarse'], batch['rgb'])
+        color_fine_loss = self.color_crit(output['rgb_fine'], batch['rgb'])
+        scalar_stats.update({'color_fine_mse': color_fine_loss})
+        color_coarse_loss = self.color_crit(output['rgb_coarse'], batch['rgb'])
+        scalar_stats.update({'color_coarse_mse': color_coarse_loss})
+        loss += color_fine_loss + color_coarse_loss
 
-        psnr = -10. * torch.log(color_loss.detach()) / \
-                torch.log(torch.Tensor([10.]).to(color_loss.device))
-        scalar_stats.update({'psnr': psnr})
-
-        scalar_stats.update({'loss': loss})
+        psnr_fine = -10. * torch.log(color_fine_loss.detach()) / \
+                torch.log(torch.Tensor([10.]).to(color_fine_loss.device))
+        psnr_coarse = -10. * torch.log(color_coarse_loss.detach()) / \
+                    torch.log(torch.Tensor([10.]).to(color_coarse_loss.device))
+        scalar_stats.update({'psnr_fine': psnr_fine})
+        scalar_stats.update({'psnr_coarse': psnr_coarse})
+        scalar_stats.update({'total_loss': loss})
         image_stats = {}
 
         return output, loss, scalar_stats, image_stats
